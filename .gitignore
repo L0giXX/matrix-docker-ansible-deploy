@@ -9,4 +9,5 @@
 /roles/galaxy/*
 !/roles/galaxy/.gitkeep
 
-.pem
+# Ignore certificates
+*.pem
