@@ -1,5 +1,4 @@
 ---
-
 # The bare domain name which represents your Matrix identity.
 # Matrix user ids for your server will be of the form (`@user:<matrix-domain>`).
 #
@@ -11,7 +10,7 @@ matrix_domain: ~
 
 # The optional matrix admin MXID, used in bridges' configs to set bridge admin user
 # Example value: "@someone:{{ matrix_domain }}"
-matrix_admin: ''
+matrix_admin: ""
 
 # Global var to enable/disable encryption across all bridges with encryption support
 matrix_bridges_encryption_enabled: false
@@ -58,14 +57,14 @@ matrix_homeserver_enabled: true
 matrix_homeserver_implementation: synapse
 
 # This contains a secret, which is used for generating various other secrets later on.
-matrix_homeserver_generic_secret_key: ''
+matrix_homeserver_generic_secret_key: ""
 
 # This is where your data lives and what we set up.
 # This and the Element FQN (see below) are expected to be on the same server.
 matrix_server_fqn_matrix: "matrix.{{ matrix_domain }}"
 
 # This is where you access federation API.
-matrix_server_fqn_matrix_federation: '{{ matrix_server_fqn_matrix }}'
+matrix_server_fqn_matrix_federation: "{{ matrix_server_fqn_matrix }}"
 
 # This is where you access the Element web UI from (if enabled via matrix_client_element_enabled; enabled by default).
 # This and the Matrix FQN (see above) are expected to be on the same server.
@@ -135,8 +134,8 @@ matrix_debian_arch: "{{ 'armhf' if matrix_architecture == 'arm32' else matrix_ar
 
 matrix_container_global_registry_prefix: "docker.io/"
 
-matrix_user_username: "matrix"
-matrix_user_groupname: "matrix"
+matrix_user_username: "odin"
+matrix_user_groupname: "odin"
 
 # By default, the playbook creates the user (`matrix_user_username`)
 # and group (`matrix_user_groupname`) with a random id.
@@ -205,7 +204,7 @@ matrix_metrics_exposure_hostname: "{{ matrix_server_fqn_matrix }}"
 matrix_metrics_exposure_path_prefix: /metrics
 matrix_metrics_exposure_http_basic_auth_enabled: false
 # See https://doc.traefik.io/traefik/middlewares/http/basicauth/#users
-matrix_metrics_exposure_http_basic_auth_users: ''
+matrix_metrics_exposure_http_basic_auth_users: ""
 
 # Specifies the type of reverse-proxy used by the playbook.
 #
@@ -231,13 +230,13 @@ matrix_metrics_exposure_http_basic_auth_users: ''
 #     - no port exposure will be done for any of the container services
 #     - it's up to you to expose the ports you want, etc.
 #     - this is unlikely to work well (if at all)
-matrix_playbook_reverse_proxy_type: ''
+matrix_playbook_reverse_proxy_type: ""
 
 # Specifies the network that the reverse-proxy is operating at
-matrix_playbook_reverse_proxy_container_network: 'traefik'
+matrix_playbook_reverse_proxy_container_network: "traefik"
 
 # Specifies the hostname that the reverse-proxy is available at
-matrix_playbook_reverse_proxy_hostname: 'matrix-traefik'
+matrix_playbook_reverse_proxy_hostname: "matrix-traefik"
 
 # Controls the additional network that reverse-proxyable services will be connected to.
 matrix_playbook_reverse_proxyable_services_additional_network: "{{ matrix_playbook_reverse_proxy_container_network }}"
@@ -266,15 +265,17 @@ matrix_playbook_public_matrix_federation_api_traefik_entrypoint_host_bind_port: 
 matrix_playbook_public_matrix_federation_api_traefik_entrypoint_host_bind_port_udp: "{{ matrix_playbook_public_matrix_federation_api_traefik_entrypoint_config_http3_advertisedPort if matrix_playbook_public_matrix_federation_api_traefik_entrypoint_config_http3_enabled else '' }}"
 matrix_playbook_public_matrix_federation_api_traefik_entrypoint_config: "{{ (matrix_playbook_public_matrix_federation_api_traefik_entrypoint_config_default | combine (matrix_playbook_public_matrix_federation_api_traefik_entrypoint_config_auto)) | combine(matrix_playbook_public_matrix_federation_api_traefik_entrypoint_config_custom, recursive=True) }}"
 matrix_playbook_public_matrix_federation_api_traefik_entrypoint_config_http3_enabled: true
-matrix_playbook_public_matrix_federation_api_traefik_entrypoint_config_http3_advertisedPort: "{{ matrix_playbook_public_matrix_federation_api_traefik_entrypoint_port }}"  # noqa var-naming
-matrix_playbook_public_matrix_federation_api_traefik_entrypoint_config_default: |
+matrix_playbook_public_matrix_federation_api_traefik_entrypoint_config_http3_advertisedPort: "{{ matrix_playbook_public_matrix_federation_api_traefik_entrypoint_port }}" # noqa var-naming
+matrix_playbook_public_matrix_federation_api_traefik_entrypoint_config_default:
+  |
   {{
     ({'http3': {'advertisedPort': matrix_playbook_public_matrix_federation_api_traefik_entrypoint_config_http3_advertisedPort | int}})
     if matrix_playbook_public_matrix_federation_api_traefik_entrypoint_config_http3_enabled
     else {}
   }}
 matrix_playbook_public_matrix_federation_api_traefik_entrypoint_config_auto: {}
-matrix_playbook_public_matrix_federation_api_traefik_entrypoint_config_custom: {}
+matrix_playbook_public_matrix_federation_api_traefik_entrypoint_config_custom:
+  {}
 
 matrix_playbook_public_matrix_federation_api_traefik_entrypoint_definition:
   name: "{{ matrix_playbook_public_matrix_federation_api_traefik_entrypoint_name }}"
@@ -307,7 +308,7 @@ matrix_playbook_public_matrix_federation_api_traefik_entrypoint_definition:
 matrix_playbook_internal_matrix_client_api_traefik_entrypoint_enabled: "{{ matrix_playbook_reverse_proxy_type in ['playbook-managed-traefik', 'other-traefik-container'] }}"
 matrix_playbook_internal_matrix_client_api_traefik_entrypoint_name: matrix-internal-matrix-client-api
 matrix_playbook_internal_matrix_client_api_traefik_entrypoint_port: 8008
-matrix_playbook_internal_matrix_client_api_traefik_entrypoint_host_bind_port: ''
+matrix_playbook_internal_matrix_client_api_traefik_entrypoint_host_bind_port: ""
 matrix_playbook_internal_matrix_client_api_traefik_entrypoint_config: "{{ matrix_playbook_internal_matrix_client_api_traefik_entrypoint_config_auto | combine(matrix_playbook_internal_matrix_client_api_traefik_entrypoint_config_custom, recursive=True) }}"
 matrix_playbook_internal_matrix_client_api_traefik_entrypoint_config_auto: {}
 matrix_playbook_internal_matrix_client_api_traefik_entrypoint_config_custom: {}
