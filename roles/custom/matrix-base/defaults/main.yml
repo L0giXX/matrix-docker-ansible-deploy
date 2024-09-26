@@ -134,8 +134,8 @@ matrix_debian_arch: "{{ 'armhf' if matrix_architecture == 'arm32' else matrix_ar
 
 matrix_container_global_registry_prefix: "docker.io/"
 
-matrix_user_username: "odin"
-matrix_user_groupname: "odin"
+matrix_user_username: "matrix"
+matrix_user_groupname: "matrix"
 
 # By default, the playbook creates the user (`matrix_user_username`)
 # and group (`matrix_user_groupname`) with a random id.
